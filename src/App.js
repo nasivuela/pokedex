@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 
+import PokemonsListModel from 'models/PokemonsModel';
+
 import PokemonDetail from 'modules/pokemon/Detail';
 import PokemonList from 'modules/pokemon/List';
 
 import styles from './App.scss'
 
-console.log(styles);
+const store = new PokemonsListModel();
 
 class App extends Component {
   render() {
@@ -27,13 +29,19 @@ class App extends Component {
                     exact
                     path="/"
                     component={props =>
-                      <PokemonList {...props} />
+                      <PokemonList
+                        {...props}
+                        store={store}
+                      />
                     }
                   />
                   <Route
                     path="/:pokemonId"
                     component={props =>
-                      <PokemonDetail {...props} />
+                      <PokemonDetail
+                        {...props}
+                        store={store}
+                      />
                     }
                   />
                   <Route render={() => <div></div>} />
