@@ -1,0 +1,25 @@
+// TODO: absolute import
+@import '../../../sass/base/sizes.scss';
+
+.List-container {
+  max-width: $size-max-container;
+  margin: 0 auto;
+}
+
+.List {
+  display: grid;
+  grid-auto-rows: auto;
+  grid-row-gap: 1.6rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 760px) {
+  .List {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 1024px) {
+  .List {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
