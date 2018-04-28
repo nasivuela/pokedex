@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import PropTypes from 'prop-types';
 import {
   observer,
   PropTypes as MobxPropTypes,
@@ -14,7 +15,7 @@ class PokemonCard extends Component {
         <div className={styles.typesBlock}>
           {pokemon && pokemon.types.map(type => (
             <span
-            className={styles.type}
+              className={styles.type}
               key={type}
             >
               {type}
@@ -26,11 +27,16 @@ class PokemonCard extends Component {
   }
 
   render() {
-    const { pokemon } = this.props;
-
+    const {
+      pokemon,
+      type,
+    } = this.props;
+    const linkTo = type === 'DETAIL'
+      ? '/'
+      : `/${pokemon.id}`;
     return (
       <Link
-        to={`/${pokemon.id}`}
+        to={linkTo}
         className={styles.card}
       >
         {pokemon && (
@@ -69,10 +75,15 @@ class PokemonCard extends Component {
 
 PokemonCard.propTypes = {
   pokemon: MobxPropTypes.observableObject.isRequired,
+  type: PropTypes.oneOf([
+    'DETAIL',
+    'LIST',
+  ])
 };
 
 PokemonCard.defaultTypes = {
   pokemon: {},
+  type: 'LIST',
 };
 
 export default observer(PokemonCard);

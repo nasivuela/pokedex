@@ -1,0 +1,7 @@
+// TODO: absolute import
+@import '../../../sass/base/sizes.scss';
+
+.DetailContainer {
+  max-width: $size-max-container;
+  margin: 0 auto;
+}

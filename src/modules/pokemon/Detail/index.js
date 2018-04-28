@@ -1,19 +1,38 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import PokemonDetail from './Detail';
+import {
+  observer,
+  PropTypes as MobxPropTypes,
+} from 'mobx-react';
+import styles from './styles.scss'
 
-class PokemonDetail extends Component {
+class PokemonDetailContainer extends Component {
+  componentDidMount() {
+    const { store, match } = this.props;
+    store.getPokemon({ id: match.params.pokemonId });
+  }
+
   render() {
-    return <div>
-      Detail
-      <Link to="/">
-        To list
-      </Link>
-    </div>;
+    const { store, match } = this.props;
+    const pokemon = store.pokemons.find(pokemon => Number(pokemon.id) === Number(match.params.pokemonId));
+    return (
+      <div className={styles.detailContainer}>
+        {pokemon
+          ? (
+            <PokemonDetail
+              pokemon={pokemon}
+              type="DETAIL"
+            />
+          )
+          : 'loading'
+        }
+      </div>
+    )
   }
 }
 
-PokemonDetail.propTypes = {
+PokemonDetailContainer.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
       pokemonId: PropTypes.string.isRequired,
@@ -21,4 +40,4 @@ PokemonDetail.propTypes = {
   }).isRequired,
 };
 
-export default PokemonDetail;
+export default observer(PokemonDetailContainer);
