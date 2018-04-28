@@ -3,7 +3,10 @@ import { Link } from 'react-router-dom';
 import { observer }  from 'mobx-react';
 
 class PokemonList extends Component {
-
+  componentDidMount() {
+    const { store } = this.props;
+    store.fetchPokemons();
+  }
   render() {
     const { store } = this.props;
     const pokemons = store.pokemons;
