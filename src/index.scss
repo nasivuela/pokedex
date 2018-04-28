@@ -1,0 +1,30 @@
+
+@import url('https://fonts.googleapis.com/css?family=Ubuntu:300,500');
+@import 'sass/base/colors';
+
+*, *::after, *::before {
+  box-sizing: border-box;
+  font-family: 'Ubuntu', sans-serif;
+}
+
+html {
+  -webkit-tap-highlight-color: transparent;
+  font-size: 62.5%;
+  height: 100%;
+}
+
+body {
+  font-family: 'Ubuntu', sans-serif;
+  font-size: 16px;
+  line-height: 1.4;
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  color: $color-fg;
+  font-weight: 300;
+  background-color: $color-bg;
+}
+
+#root {
+  height: 100%;
+}
