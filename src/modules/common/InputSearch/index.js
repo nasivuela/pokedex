@@ -1,6 +1,7 @@
 
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import styles from './styles.scss';
 
 class InputSearch extends PureComponent {
   render() {
@@ -11,6 +12,7 @@ class InputSearch extends PureComponent {
     } = this.props;
     return (
       <input
+        className={styles.inputSearch}
         type="text"
         onChange={onChange}
         value={value}
