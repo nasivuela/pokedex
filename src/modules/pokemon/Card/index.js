@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
+import cx from 'classnames';
 import {
   observer,
   PropTypes as MobxPropTypes,
@@ -37,7 +38,7 @@ class PokemonCard extends Component {
     return (
       <Link
         to={linkTo}
-        className={styles.card}
+        className={cx(styles.card, {[styles.cardFull]: type === 'DETAIL'})}
       >
         {pokemon && (
           <Fragment>
