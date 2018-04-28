@@ -6,6 +6,7 @@ import {
   PropTypes as MobxPropTypes
 } from 'mobx-react';
 import InputSearch from 'modules/common/InputSearch';
+import Card from 'modules/pokemon/Card';
 import styles from './styles.scss';
 
 class PokemonList extends Component {
@@ -24,7 +25,7 @@ class PokemonList extends Component {
   }
 
   handleSearch(e) {
-    this.setState({search: e.target.value});
+    this.setState({ search: e.target.value });
   }
 
   filteredPokemons() {
@@ -37,7 +38,7 @@ class PokemonList extends Component {
   }
 
   render() {
-    const {search} = this.state;
+    const { search } = this.state;
     const { store } = this.props;
     const pokemons = store.pokemons;
 
@@ -56,10 +57,10 @@ class PokemonList extends Component {
         <div className={styles.list}>
           {this.filteredPokemons()
             .map(pokemon => (
-              <div key={pokemon.id}>
-                {pokemon.id}
-                {pokemon.name}
-              </div>
+              <Card
+                key={pokemon.url}
+                pokemon={pokemon}
+              />
             ))
           }
         </div>

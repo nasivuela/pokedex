@@ -1,0 +1,82 @@
+// TODO: absolute import
+@import '../../../sass/base/colors.scss';
+
+.Card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 288px;
+  text-decoration: none;
+  box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.29);
+  background-color: $grey;
+  color: $color-fg;
+
+  &:visited,
+  &:hover,
+   {
+    color: $color-fg;
+  }
+}
+
+.block-img {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+
+  .img {
+    width: 96px;
+    height: 96px;
+  }
+}
+
+.block-info {
+  position: relative;
+  width: 100%;
+  flex: 1;
+  padding: 16px;
+  background-color: white
+}
+
+.block-id {
+  position: absolute;
+  left: 0;
+  bottom: 100%;
+  padding: .4rem .8rem;
+  background-color: $lighter-brow;
+  color: $brown;
+}
+
+.title {
+  margin: 0 0 .4rem 0;
+  font-weight: bold;
+  font-size: 2.4rem;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.types-block {
+  display: flex;
+  margin-bottom: 8px;
+}
+
+.type {
+  margin-right: .4rem;
+  padding: .2rem .4rem;
+  text-transform: uppercase;
+  font-size: 1.2rem;
+  border: .1rem solid $light-brown;
+  border-radius: .6rem;
+  color: $brown;
+}
+
+.evolution-block {
+  padding-left: .4rem;
+  border-left: .4rem solid $brown;
+  color: $brown;
+}
+
+.evolves-from {
+  font-size: 2.4rem;
+}
