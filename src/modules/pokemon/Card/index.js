@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import {
@@ -64,13 +64,19 @@ class PokemonCard extends Component {
       pokemon,
       full,
     } = this.props;
+    const {
+      id,
+      img,
+      name,
+      evolvesFrom,
+    } = pokemon;
     const linkTo = full
       ? '/'
-      : `/${pokemon.id}`;
+      : `/${id}`;
     return (
       <CSSTransition
         in={full}
-        key={pokemon.key}
+        key={id}
         classNames={{ exit: styles.cardWrapperExit }}
         timeout={100}
       >
@@ -78,7 +84,7 @@ class PokemonCard extends Component {
           ref={this.getRef} className={cx({ [styles.cardWrapper]: !full })}>
           <CSSTransition
             in={full}
-            key={pokemon.key}
+            key={id}
             classNames={{
               exit: styles.cardFullHelperExit,
               enter: styles.cardFullHelperEnter,
@@ -95,35 +101,33 @@ class PokemonCard extends Component {
                   className={cx(styles.card, { [styles.cardFull]: full })}
 
                 >
-                  {pokemon && (
-                    <Fragment>
-                      <div className={styles.blockImg}>
-                        <img
-                          className={styles.img}
-                          src={pokemon.img}
-                          alt={pokemon.name}
-                        />
-                      </div>
+                  <div className={styles.blockImg}>
+                    {img && (
+                      <img
+                        className={styles.img}
+                        src={img}
+                        alt={name}
+                      />
+                    )}
+                  </div>
 
-                      <div className={styles.blockInfo}>
-                        <div className={styles.blockId}>
-                          {`ID / ${pokemon.id}`}
-                        </div>
-                        <h2 className={styles.title}>
-                          {pokemon.name}
-                        </h2>
-                        {this.getTypeNames()}
-                        {pokemon.evolvesFrom && (
-                          <div className={styles.evolutionBlock}>
-                            Evoluciona de:
+                  <div className={styles.blockInfo}>
+                    <div className={styles.blockId}>
+                      {`ID / ${id}`}
+                    </div>
+                    <h2 className={styles.title}>
+                      {name}
+                    </h2>
+                    {this.getTypeNames()}
+                    {evolvesFrom && (
+                      <div className={styles.evolutionBlock}>
+                        Evoluciona de:
                             <div className={styles.evolvesFrom}>
-                              {pokemon.evolvesFrom}
-                            </div>
-                          </div>
-                        )}
+                          {evolvesFrom}
+                        </div>
                       </div>
-                    </Fragment>
-                  )}
+                    )}
+                  </div>
                 </Link>
               </div>
             )}
