@@ -61,20 +61,20 @@ class PokemonList extends Component {
               ref={this.getRef}
               className={styles.list}
             >
-                {this.filteredPokemons()
-                  .map(pokemon => (
-                    <Card
-                      parentPositionLeft={
-                        this.node
-                        && this.node.getBoundingClientRect().left
-                      }
-                      full={Number(match.params.pokemonId) === pokemon.id}
-                      key={pokemon.id}
-                      pokemon={pokemon}
-                    />
-                  ))
-                }
-                </div>
+              {this.filteredPokemons()
+                .map(pokemon => (
+                  <Card
+                    parentPositionLeft={
+                      this.node
+                      && this.node.getBoundingClientRect().left
+                    }
+                    full={Number(match.params.pokemonId) === pokemon.id}
+                    key={pokemon.id}
+                    pokemon={pokemon}
+                  />
+                ))
+              }
+            </div>
           )}
       </div>
     )
