@@ -1,21 +1,31 @@
 import { decorate, observable, action } from "mobx";
-import { urlToId, streamToJson } from 'utils';
+import {
+  urlToId,
+  streamToJson,
+  handleFetchErrors,
+ } from 'utils';
 import PokemonModel from "models/PokemonModel";
 
-const pokemonsUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=9';
+const pokemonsUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=30';
 
 export default class PokemonListModel {
   pokemons = [];
+  fetching = true;
+  error = null
 
   fetchPokemons() {
+    this.fetching = true;
     fetch(pokemonsUrl, { cache: 'force-cache' })
+      .then(handleFetchErrors)
       .then(streamToJson)
       .then(response => response.results
         .map((pokemon) => this.handleIncomingPokemon({
           ...pokemon,
           id: urlToId(pokemon.url),
         }))
-      );
+      )
+      .catch(error => this.error = error)
+      .finally(() =>  this.fetching = false);
   }
 
   getPokemon(pokemon) {
@@ -49,5 +59,7 @@ export default class PokemonListModel {
 
 decorate(PokemonListModel, {
   pokemons: observable,
+  fetching: observable,
+  error: observable,
   addPokemons: action,
 });
