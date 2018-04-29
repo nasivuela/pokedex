@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import cx from 'classnames';
 import {
   observer,
   PropTypes as MobxPropTypes
@@ -17,6 +17,7 @@ class PokemonList extends Component {
     };
 
     this.handleSearch = this.handleSearch.bind(this);
+    this.getRef = this.getRef.bind(this);
   }
 
   componentDidMount() {
@@ -37,33 +38,43 @@ class PokemonList extends Component {
       : store.pokemons;
   }
 
+  getRef(node) {
+    this.node = node;
+  }
+
   render() {
     const { search } = this.state;
-    const { store } = this.props;
-    const pokemons = store.pokemons;
-
-    if (!pokemons.length) return 'LOADING';
-
+    const { store, className, match } = this.props;
+    const { pokemons } = store;
     return (
-      <div className={styles.listContainer}>
-        <Link to="/detail">
-          To detail
-        </Link>
+      <div className={cx(styles.listContainer, className)}>
         <InputSearch
           onChange={this.handleSearch}
           value={search}
           placeholder="Filtra pokemons por nombre"
         />
-        <div className={styles.list}>
-          {this.filteredPokemons()
-            .map(pokemon => (
-              <Card
-                key={pokemon.url}
-                pokemon={pokemon}
-              />
-            ))
-          }
-        </div>
+        {!pokemons.length
+          ? 'loading'
+          : (
+            <div
+              ref={this.getRef}
+              className={styles.list}
+            >
+                {this.filteredPokemons()
+                  .map(pokemon => (
+                    <Card
+                      parentPositionLeft={
+                        this.node
+                        && this.node.getBoundingClientRect().left
+                      }
+                      full={Number(match.params.pokemonId) === pokemon.id}
+                      key={pokemon.url}
+                      pokemon={pokemon}
+                    />
+                  ))
+                }
+                </div>
+          )}
       </div>
     )
   }
