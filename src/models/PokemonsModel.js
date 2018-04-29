@@ -6,7 +6,7 @@ import {
  } from 'utils';
 import PokemonModel from "models/PokemonModel";
 
-const pokemonsUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=30';
+const pokemonsUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=12';
 
 export default class PokemonListModel {
   pokemons = [];
