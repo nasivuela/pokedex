@@ -1,5 +1,5 @@
 import { observable, decorate } from "mobx";
-import { streamToJson } from 'utils';
+import { streamToJson, handleFetchErrors } from 'utils';
 
 const baseUrl = 'https://pokeapi.co/api/v2/pokemon/';
 
@@ -16,12 +16,16 @@ export default class PokemonModel {
 
   fetchSpecies(url) {
     return fetch(url, { cache: 'force-cache' })
+      .then(handleFetchErrors)
       .then(streamToJson)
+      .catch(err => console.log('err'));
   }
 
   fetchEvolution(url) {
     return fetch(url, { cache: 'force-cache' })
+      .then(handleFetchErrors)
       .then(streamToJson)
+      .catch(err => console.log('err'));
   }
 
   findInArr(arr, pokemonName, previousPokemonName, pos = 0) {
@@ -43,12 +47,14 @@ export default class PokemonModel {
       .then(species => this.fetchEvolution(species.evolution_chain.url))
       .then(evolutionChain => this.findPrevPokemonInChain([evolutionChain.chain], this.name))
       .then(evolvesFrom => this.evolvesFrom = evolvesFrom)
+      .catch(err => console.log('err'));
   }
 
   fetch() {
     if (!this.id) { return };
     fetch(this.url, { cache: 'force-cache' })
-      .then(response => response.json())
+      .then(handleFetchErrors)
+      .then(streamToJson)
       .then(({
         id,
         name,
@@ -62,7 +68,8 @@ export default class PokemonModel {
         this.img = sprites.front_default;
         this.speciesUrl = species.url;
         this.getEvolution();
-      });
+      })
+      .catch(err => console.log('err'));
   }
 };
 
