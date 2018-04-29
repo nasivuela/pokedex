@@ -5,10 +5,16 @@ import {
   observer,
   PropTypes as MobxPropTypes,
 } from "mobx-react";
+import { CSSTransition } from "react-transition-group";
 import { Link } from 'react-router-dom';
 import styles from './styles.scss'
 
 class PokemonCard extends Component {
+  constructor(props) {
+    super(props);
+
+    this.getRef = this.getRef.bind(this);
+  }
   getTypeNames() {
     const { pokemon } = this.props;
     return pokemon.types
@@ -27,64 +33,114 @@ class PokemonCard extends Component {
       : null;
   }
 
+  getRef(node) {
+    this.node = node;
+  }
+
+  detailStyles(state) {
+    const { parentPositionLeft } = this.props;
+    const positions = (this.node && this.node.getBoundingClientRect()) || {};
+    const y = positions
+      && positions.top
+      && positions.top + 16;
+    const x = positions && positions.left - parentPositionLeft;
+    return ({
+      transform: state !== 'exited'
+        && state !== 'exiting'
+        && positions
+        ? `translate(-${x}px, ${(y * -1) + 16}px)`
+        : 'translate(0,0)',
+      top: state === 'entered'
+        ? `${y}px`
+        : 'initial',
+      left: state === 'entered'
+        ? `${x}px`
+        : 'initial'
+    })
+  }
+
   render() {
     const {
       pokemon,
-      type,
+      full,
     } = this.props;
-    const linkTo = type === 'DETAIL'
+    const linkTo = full
       ? '/'
       : `/${pokemon.id}`;
     return (
-      <Link
-        to={linkTo}
-        className={cx(styles.card, {[styles.cardFull]: type === 'DETAIL'})}
+      <CSSTransition
+        in={full}
+        key={pokemon.key}
+        classNames={{ exit: styles.cardWrapperExit }}
+        timeout={100}
       >
-        {pokemon && (
-          <Fragment>
-            <div className={styles.blockImg}>
-              <img
-                className={styles.img}
-                src={pokemon.img}
-                alt={pokemon.name}
-              />
-            </div>
+        <div
+          ref={this.getRef} className={cx({ [styles.cardWrapper]: !full })}>
+          <CSSTransition
+            in={full}
+            key={pokemon.key}
+            classNames={{
+              exit: styles.cardFullHelperExit,
+              enter: styles.cardFullHelperEnter,
+            }}
+            timeout={100}
+          >
+            {state => (
+              <div
+                style={this.detailStyles(state)}
+                className={cx(styles.cardHelper, { [styles.cardFullHelper]: full })}
+              >
+                <Link
+                  to={linkTo}
+                  className={cx(styles.card, { [styles.cardFull]: full })}
 
-            <div className={styles.blockInfo}>
-              <div className={styles.blockId}>
-                {`ID / ${pokemon.id}`}
+                >
+                  {pokemon && (
+                    <Fragment>
+                      <div className={styles.blockImg}>
+                        <img
+                          className={styles.img}
+                          src={pokemon.img}
+                          alt={pokemon.name}
+                        />
+                      </div>
+
+                      <div className={styles.blockInfo}>
+                        <div className={styles.blockId}>
+                          {`ID / ${pokemon.id}`}
+                        </div>
+                        <h2 className={styles.title}>
+                          {pokemon.name}
+                        </h2>
+                        {this.getTypeNames()}
+                        {pokemon.evolvesFrom && (
+                          <div className={styles.evolutionBlock}>
+                            Evoluciona de:
+                            <div className={styles.evolvesFrom}>
+                              {pokemon.evolvesFrom}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </Fragment>
+                  )}
+                </Link>
               </div>
-              <h2 className={styles.title}>
-                {pokemon.name}
-              </h2>
-              {this.getTypeNames()}
-              {pokemon.evolvesFrom && (
-                <div className={styles.evolutionBlock}>
-                  Evoluciona de:
-                  <div className={styles.evolvesFrom}>
-                    {pokemon.evolvesFrom}
-                  </div>
-                </div>
-              )}
-            </div>
-          </Fragment>
-        )}
-      </Link>
+            )}
+          </CSSTransition>
+        </div>
+      </CSSTransition>
     );
   }
 }
 
 PokemonCard.propTypes = {
   pokemon: MobxPropTypes.observableObject.isRequired,
-  type: PropTypes.oneOf([
-    'DETAIL',
-    'LIST',
-  ])
+  parentPositionLeft: PropTypes.number,
 };
 
 PokemonCard.defaultTypes = {
   pokemon: {},
-  type: 'LIST',
 };
 
 export default observer(PokemonCard);

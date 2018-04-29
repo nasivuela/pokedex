@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import cx from 'classnames';
 import PokemonDetail from './Detail';
 import {
   observer,
@@ -14,10 +15,10 @@ class PokemonDetailContainer extends Component {
   }
 
   render() {
-    const { store, match } = this.props;
+    const { store, match, className } = this.props;
     const pokemon = store.pokemons.find(pokemon => Number(pokemon.id) === Number(match.params.pokemonId));
     return (
-      <div className={styles.detailContainer}>
+      <div className={cx(styles.detailContainer, className)}>
         {pokemon
           ? (
             <PokemonDetail

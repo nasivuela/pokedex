@@ -1,9 +1,9 @@
-// TODO: absolute import
-@import '../../../sass/base/sizes.scss';
-
 .List-container {
-  max-width: $size-max-container;
-  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  align-items: center;
 }
 
 .List {
@@ -12,6 +12,7 @@
   grid-row-gap: 1.6rem;
   grid-column-gap: 1.6rem;
   grid-template-columns: 1fr;
+  width: 100%;
 }
 
 @media (min-width: 760px) {
@@ -19,7 +20,8 @@
     grid-template-columns: repeat(2, 1fr);
   }
 }
-@media (min-width: 1024px) {
+
+@media (min-width: 920px) {
   .List {
     grid-template-columns: repeat(3, 1fr);
   }

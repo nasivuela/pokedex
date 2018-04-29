@@ -1,24 +1,20 @@
+// TODO: absolute import
+@import 'sass/base/sizes.scss';
+
 .App {
   height: 100%;
-}
-.App-page-transition {
-  opacity: 1;
-}
-
-.App-page-enter {
-  opacity: 0.01;
-}
-
-.App-page-enter.App-page-enter-active {
-  opacity: 1;
-  transition: opacity 500ms ease-in;
+  max-width: $size-max-container;
+  margin: 0 auto;
+  position: relative;
+  padding-top: 1.6rem;
+  padding-right: 1.6rem;
+  padding-bottom: 1.6rem;
+  padding-left: 1.6rem;
 }
 
-.App-page-leave {
-  opacity: 1;
-}
-
-.App-page-leave.App-page-leave-active {
-  opacity: 0.01;
-  transition: opacity 300ms ease-in;
+@media (min-width: 920px) {
+  .App {
+    padding-right: 0;
+    padding-left: 0;
+  }
 }
