@@ -26,8 +26,19 @@ class PokemonList extends Component {
     store.fetchPokemons();
   }
 
+  componentDidUpdate() {
+    const { match, history, store } = this.props;
+    const idFromParam = match.params.pokemonId
+      && Number(match.params.pokemonId)
+    if (idFromParam
+      && !store.pokemons.some(pokemon => pokemon.id === idFromParam)) {
+      // TODO: manage single fetch and pagination
+      history.replace('/');
+    }
+  }
+
   handleSearch(e) {
-    this.setState({ search: e.target.value });
+    this.setState({ search: e.target.value.toLowerCase() });
   }
 
   filteredPokemons() {
@@ -47,6 +58,7 @@ class PokemonList extends Component {
     const { search } = this.state;
     const { store, className, match } = this.props;
     const { pokemons, fetching } = store;
+    const filteredPokemons = this.filteredPokemons();
     return (
       <div className={cx(styles.listContainer, className)}>
         <InputSearch
@@ -57,24 +69,29 @@ class PokemonList extends Component {
         {!pokemons.length && fetching
           ? <Loading />
           : (
-            <div
-              ref={this.getRef}
-              className={styles.list}
-            >
-              {this.filteredPokemons()
-                .map(pokemon => (
-                  <Card
-                    parentPositionLeft={
-                      this.node
-                      && this.node.getBoundingClientRect().left
-                    }
-                    full={Number(match.params.pokemonId) === pokemon.id}
-                    key={pokemon.id}
-                    pokemon={pokemon}
-                  />
-                ))
-              }
-            </div>
+
+            !filteredPokemons.length
+              ? (<div styles={styles.empty}>Pokemon no econtrado</div>)
+              : (
+                <div
+                  ref={this.getRef}
+                  className={styles.list}
+                >
+                  {filteredPokemons
+                    .map(pokemon => (
+                      <Card
+                        parentPositionLeft={
+                          this.node
+                          && this.node.getBoundingClientRect().left
+                        }
+                        full={Number(match.params.pokemonId) === pokemon.id}
+                        key={pokemon.id}
+                        pokemon={pokemon}
+                      />
+                    ))
+                  }
+                </div>
+              )
           )}
       </div>
     )
