@@ -16,6 +16,10 @@
   width: 100%;
 }
 
+.empty {
+  text-align: center;
+}
+
 @media (min-width: 760px) {
   .List {
     grid-template-columns: repeat(2, 1fr);
